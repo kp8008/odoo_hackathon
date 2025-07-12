@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Swap - Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <!-- Header -->
+            <div class="header">
+                <h1>Admin Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div>
+                        <div id="userName"></div>
+                        <button class="logout-btn" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Navigation -->
+            <div class="admin-nav">
+                <button class="nav-btn active" onclick="showSection('dashboard')">Dashboard</button>
+                <button class="nav-btn" onclick="showSection('users')">Users</button>
+                <button class="nav-btn" onclick="showSection('swaps')">Swaps</button>
+                <button class="nav-btn" onclick="showSection('messages')">Messages</button>
+                <button class="nav-btn" onclick="showSection('reports')">Reports</button>
+            </div>
+
+            <!-- Dashboard Overview -->
+            <div id="dashboardSection" class="admin-section">
+                <h2>Platform Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalUsers">-</h3>
+                        <p>Total Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="activeUsers">-</h3>
+                        <p>Active Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalSwaps">-</h3>
+                        <p>Total Swaps</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="completedSwaps">-</h3>
+                        <p>Completed Swaps</p>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div id="recentUsers"></div>
+                    <div id="recentSwaps"></div>
+                </div>
+            </div>
+
+            <!-- Users Management -->
+            <div id="usersSection" class="admin-section" style="display: none;">
+                <h2>User Management</h2>
+                <div id="usersList"></div>
+            </div>
+
+            <!-- Swaps Management -->
+            <div id="swapsSection" class="admin-section" style="display: none;">
+                <h2>Swap Management</h2>
+                <div id="swapsList"></div>
+            </div>
+
+            <!-- Platform Messages -->
+            <div id="messagesSection" class="admin-section" style="display: none;">
+                <h2>Platform Messages</h2>
+                <button class="btn-primary" onclick="openMessageModal()">Send New Message</button>
+                <div id="messagesList"></div>
+            </div>
+
+            <!-- Reports -->
+            <div id="reportsSection" class="admin-section" style="display: none;">
+                <h2>Reports</h2>
+                <div class="reports-grid">
+                    <button class="report-btn" onclick="generateReport('user-activity')">User Activity Report</button>
+                    <button class="report-btn" onclick="generateReport('feedback-logs')">Feedback Logs Report</button>
+                    <button class="report-btn" onclick="generateReport('swap-stats')">Swap Statistics Report</button>
+                </div>
+                <div id="reportsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeMessageModal()">&times;</span>
+            <h2>Send Platform Message</h2>
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="messageTitle">Title</label>
+                    <input type="text" id="messageTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="messageContent">Message</label>
+                    <textarea id="messageContent" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="messageType">Type</label>
+                    <select id="messageType">
+                        <option value="info">Information</option>
+                        <option value="warning">Warning</option>
+                        <option value="update">Update</option>
+                        <option value="alert">Alert</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 

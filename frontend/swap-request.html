@@ -1,0 +1,245 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Swap</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .swap-request-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px 30px 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 60px auto;
+        }
+        .swap-request-container h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        .swap-request-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .swap-request-form select,
+        .swap-request-form textarea {
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .swap-request-form select:focus,
+        .swap-request-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .swap-request-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .swap-request-form button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .swap-request-form button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="swap-request-container">
+        <h3>Send Swap Request</h3>
+        <form class="swap-request-form" onsubmit="submitRequest(event)">
+            <select id="offered" required>
+                <option value="">Select Skill You Offer</option>
+                <option>Excel</option>
+                <option>Java</option>
+            </select>
+            <select id="wanted" required>
+                <option value="">Select Skill You Want</option>
+                <option>Photoshop</option>
+                <option>Python</option>
+            </select>
+            <textarea id="message" placeholder="Message (optional)"></textarea>
+            <button type="submit">Submit Request</button>
+        </form>
+    </div>
+    <script>
+        function submitRequest(e) {
+            e.preventDefault();
+            const payload = {
+                senderId: "123", receiverId: "456",
+                skillOffered: document.getElementById("offered").value,
+                skillWanted: document.getElementById("wanted").value,
+                message: document.getElementById("message").value
+            };
+            fetch("http://localhost:5000/api/swaps/request", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+                .then(res => res.json())
+                .then(data => alert("Swap Requested"));
+        }
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Send Skill Swap Request</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #6a8df3, #7f5bd1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .swap-request-container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .swap-request-container h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    button {
+      background-color: #5b6def;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #4757d8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="swap-request-container">
+    <h2>Send Skill Swap Request</h2>
+    <form id="swapRequestForm">
+      <div class="form-group">
+        <label for="skillOffered">Skill You Offer:</label>
+        <input type="text" id="skillOffered" name="skillOffered" required />
+      </div>
+      <div class="form-group">
+        <label for="skillWanted">Skill You Want:</label>
+        <input type="text" id="skillWanted" name="skillWanted" required />
+      </div>
+      <div class="form-group">
+        <label for="message">Message (optional):</label>
+        <textarea id="message" name="message"></textarea>
+      </div>
+      <button type="submit">Send Request</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('swapRequestForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const receiverId = urlParams.get('userId');
+      const currentUser = JSON.parse(localStorage.getItem('user'));
+
+      const skillOffered = form.skillOffered.value;
+      const skillWanted = form.skillWanted.value;
+      const message = form.message.value;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/swaps/request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({
+            senderId: currentUser._id,
+            receiverId: receiverId,
+            skillOffered,
+            skillWanted,
+            message
+          })
+        });
+
+        if (response.ok) {
+          alert('Swap request sent successfully!');
+          window.location.href = 'index.html?swapped=1';
+        }
+         else {
+          const err = await response.json();
+          alert(err.message || 'Failed to send request');
+        }
+      } catch (error) {
+        alert('Network error, please try again.');
+      }
+      
+    });
+  </script>
+</body>
+</html>
+
